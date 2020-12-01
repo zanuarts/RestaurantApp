@@ -28,7 +28,7 @@ class Restaurant {
     this.pictureId,
     this.city,
     this.rating,
-    // this.menus,
+    this.menus,
   });
 
   String id;
@@ -37,7 +37,7 @@ class Restaurant {
   String pictureId;
   String city;
   double rating;
-  // Menus menus;
+  Menus menus;
 
   Restaurant.fromJson(Map<String, dynamic> restaurant){
     id = restaurant['id'];

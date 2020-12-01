@@ -4,14 +4,27 @@ import 'package:restaurant_app/models/models.dart';
 class RestaurantDetailPage extends StatelessWidget {
   static const routeName = '/restaurant_detail';
 
-  final LocalRestaurant restaurants;
+  final Restaurant restaurants;
 
   const RestaurantDetailPage({@required this.restaurants});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(restaurants.name),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Image.network(restaurants.pictureId),
+            Text(restaurants.name),
+            Text(restaurants.city),
+            Text(restaurants.description),
+            
+          ],
+        ),
+      ),
     );
   }
 }
