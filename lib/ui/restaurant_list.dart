@@ -33,17 +33,53 @@ class RestaurantListPage extends StatelessWidget {
             )
           ];
         },
-        body: FutureBuilder<String>(
-          future: DefaultAssetBundle.of(context).loadString('assets/json/local_restaurant.json'),
-          builder: (context, snapshot){
-            final List<Restaurant> restaurants = parseRestaurants(snapshot.data);
-            return ListView.builder(
-              itemCount: restaurants.length,
-              itemBuilder: (context, index){
-                return _buildRestaurantItem(context, restaurants[index]);
-              }
-            );
-          },
+        // body: FutureBuilder<String>(
+        //   future: DefaultAssetBundle.of(context).loadString('assets/json/local_restaurant.json'),
+        //   builder: (context, snapshot){
+        //     final List<Restaurant> restaurants = parseRestaurants(snapshot.data);
+        //     return restaurants.length != 0
+        //     ? ListView.builder(
+        //         itemCount: restaurants.length,
+        //         itemBuilder: (context, index){
+        //           return _buildRestaurantItem(context, restaurants[index]);
+        //         }
+        //       )
+        //     : Center(
+        //       child: Text('There is no data!'),
+        //     );
+        //   },
+        // ),
+        body: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              height: 40,
+              child: TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Search',
+                ),
+              ) ,
+            ),
+            Expanded(
+              child: FutureBuilder<String>(
+                future: DefaultAssetBundle.of(context).loadString('assets/json/local_restaurant.json'),
+                builder: (context, snapshot){
+                  final List<Restaurant> restaurants = parseRestaurants(snapshot.data);
+                  return restaurants.length != 0
+                  ? ListView.builder(
+                      itemCount: restaurants.length,
+                      itemBuilder: (context, index){
+                        return _buildRestaurantItem(context, restaurants[index]);
+                      }
+                    )
+                  : Center(
+                    child: Text('There is no data!'),
+                  );
+                },
+              ),
+            )
+          ],
         ),
       )
     );
@@ -52,7 +88,7 @@ class RestaurantListPage extends StatelessWidget {
 
 Widget _buildRestaurantItem(BuildContext context, Restaurant restaurant){
   return ListTile(
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
     leading: Hero(
       tag: restaurant.pictureId,
       child: Image.network(
