@@ -8,11 +8,32 @@ class RestaurantListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Restaurant App'),
-      ),
-      body: SafeArea(
-        child: FutureBuilder<String>(
+      body: NestedScrollView(
+        headerSliverBuilder: (context, isScrolled){
+          return[
+            SliverAppBar(
+              pinned: true,
+              expandedHeight: 120,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Container(
+                  padding: const EdgeInsets.only(top: 70, left: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Restaurant',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      SizedBox(height: 8),
+                      Text('Recommended Restaurant for you!')
+                    ],
+                  ),
+                ),
+                titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
+              ),
+            )
+          ];
+        },
+        body: FutureBuilder<String>(
           future: DefaultAssetBundle.of(context).loadString('assets/json/local_restaurant.json'),
           builder: (context, snapshot){
             final List<Restaurant> restaurants = parseRestaurants(snapshot.data);
@@ -32,12 +53,19 @@ class RestaurantListPage extends StatelessWidget {
 Widget _buildRestaurantItem(BuildContext context, Restaurant restaurant){
   return ListTile(
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-    leading: Image.network(
-      restaurant.pictureId,
-      width: 100,
+    leading: Hero(
+      tag: restaurant.pictureId,
+      child: Image.network(
+        restaurant.pictureId,
+        width: 100,
+        fit: BoxFit.fitWidth,
+      ),
     ),
-    title: Text(restaurant.name),
-    subtitle: Text(restaurant.city),
+    title: Text(
+      restaurant.name,
+      style: Theme.of(context).textTheme.headline6,
+    ),
+    subtitle: Text(restaurant.rating),
     onTap: (){
       Navigator.pushNamed(context, RestaurantDetailPage.routeName, arguments: restaurant);
     },

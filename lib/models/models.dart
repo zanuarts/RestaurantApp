@@ -36,7 +36,7 @@ class Restaurant {
   String description;
   String pictureId;
   String city;
-  double rating;
+  String rating;
   Menus menus;
 
   Restaurant.fromJson(Map<String, dynamic> restaurant){
@@ -45,7 +45,7 @@ class Restaurant {
     description = restaurant['description'];
     pictureId = restaurant['pictureId'];
     city = restaurant['city'];
-    rating = restaurant['rating'].toDouble();
+    rating = restaurant['rating'].toString();
     // menus = restaurant['menus'] != null
     //   ? new Menus.fromJson(restaurant['menus'])
     //   : null;
