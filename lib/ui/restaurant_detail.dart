@@ -5,8 +5,10 @@ class RestaurantDetailPage extends StatelessWidget {
   static const routeName = '/restaurant_detail';
 
   final Restaurant restaurants;
+  final Food food;
+  final Drink drinks;
 
-  const RestaurantDetailPage({@required this.restaurants});
+  const RestaurantDetailPage({@required this.restaurants, this.food, this.drinks});
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +67,48 @@ class RestaurantDetailPage extends StatelessWidget {
                   'Menu',
                   style: Theme.of(context).textTheme.headline6,
                 ),
+                SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(top: 60, left: 8),
+                      height: 100,
+                      width: 160,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(10)
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '$food.name',
+                            style: Theme.of(context).textTheme.headline5,
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(top: 60, left: 8),
+                      height: 100,
+                      width: 160,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(10)
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '$drinks.name',
+                            style: Theme.of(context).textTheme.headline5,
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ]

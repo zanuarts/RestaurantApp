@@ -46,9 +46,9 @@ class Restaurant {
     pictureId = restaurant['pictureId'];
     city = restaurant['city'];
     rating = restaurant['rating'].toString();
-    // menus = restaurant['menus'] != null
-    //   ? new Menus.fromJson(restaurant['menus'])
-    //   : null;
+    menus = restaurant['menus'] != null
+      ? new Menus.fromJson(restaurant['menus'])
+      : null;
   }
 }
 
@@ -69,13 +69,16 @@ class Menus {
   List<Food> foods;
   List<Drink> drinks;
 
-  Menus.fromJson(Map<String, dynamic> menus){
-    foods = menus['foods'] ;
-    drinks = menus['drinks'];
+  factory Menus.fromJson(Map<String, dynamic> menus){
+    var foods = menus['foods'] as List;
+    List<Food> foodList = foods.map((i) => Food.fromJson(i)).toList();
+    var drinks = menus['drinks'] as List;
+    List<Drink> drinkList = drinks.map((i) => Drink.fromJson(i)).toList();
+    return Menus(foods: foodList, drinks: drinkList);
   }
 }
 
-List<Menus> parseMenuss(String json){
+List<Menus> parseMenus(String json){
   if (json == null){
     return [];
   }
@@ -85,14 +88,12 @@ List<Menus> parseMenuss(String json){
 }
 
 class Food{
-  String nama;
+  String name;
 
-  Food({
-    this.nama,
-  });
+  Food({this.name});
 
   Food.fromJson(Map<String, dynamic> foods){
-    nama = foods['name'];
+    name = foods['name'];
   }
 }
 
