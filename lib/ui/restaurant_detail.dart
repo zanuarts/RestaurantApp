@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/models/models.dart';
@@ -72,7 +73,7 @@ class RestaurantDetailPage extends StatelessWidget {
                 children: [
                   Container(
                     padding: const EdgeInsets.only(top: 20, left: 8),
-                    height: restaurants.menus.foods.length * 25.0,
+                    height: getMinHeight(restaurants.menus),
                     width: 160,
                     decoration: BoxDecoration(
                         color: Colors.grey,
@@ -81,13 +82,14 @@ class RestaurantDetailPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         for (var item in restaurants.menus.foods)
-                          Text(item.name)
+                          Text(item.name,
+                              style: Theme.of(context).textTheme.headline6)
                       ],
                     ),
                   ),
                   Container(
                     padding: const EdgeInsets.only(top: 20, left: 8),
-                    height: restaurants.menus.drinks.length * 25.0,
+                    height: getMinHeight(restaurants.menus),
                     width: 160,
                     decoration: BoxDecoration(
                         color: Colors.grey,
@@ -96,7 +98,8 @@ class RestaurantDetailPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         for (var item in restaurants.menus.drinks)
-                          Text(item.name)
+                          Text(item.name,
+                              style: Theme.of(context).textTheme.headline6)
                       ],
                     ),
                   ),
@@ -108,4 +111,11 @@ class RestaurantDetailPage extends StatelessWidget {
       ),
     );
   }
+}
+
+double getMinHeight(Menus m) {
+  int maxRow =
+      m.foods.length > m.drinks.length ? m.foods.length : m.drinks.length;
+  double rowHeight = 27.0; // Just random number lol
+  return maxRow * rowHeight;
 }
