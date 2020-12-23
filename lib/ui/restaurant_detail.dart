@@ -1,5 +1,3 @@
-import 'dart:developer';
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/models/models.dart';
@@ -63,48 +61,80 @@ class RestaurantDetailPage extends StatelessWidget {
               SizedBox(height: 8),
               Text(restaurants.description),
               SizedBox(height: 8),
+              
               Text(
-                'Menu',
+                'Food',
                 style: Theme.of(context).textTheme.headline6,
               ),
               SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(top: 20, left: 8),
-                    height: getMinHeight(restaurants.menus),
-                    width: 160,
-                    decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        for (var item in restaurants.menus.foods)
-                          Text(item.name,
-                              style: Theme.of(context).textTheme.headline6)
-                      ],
+
+              Container(
+                height: 200,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    Container(
+                      width: 160.0,
+                      color: Colors.red,
+                      // child: Text(restaurants.menus.foods),
                     ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(top: 20, left: 8),
-                    height: getMinHeight(restaurants.menus),
-                    width: 160,
-                    decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        for (var item in restaurants.menus.drinks)
-                          Text(item.name,
-                              style: Theme.of(context).textTheme.headline6)
-                      ],
+                    Container(
+                      width: 160.0,
+                      color: Colors.blue,
                     ),
-                  ),
-                ],
-              )
+                    Container(
+                      width: 160.0,
+                      color: Colors.green,
+                    ),
+                    Container(
+                      width: 160.0,
+                      color: Colors.yellow,
+                    ),
+                    Container(
+                      width: 160.0,
+                      color: Colors.orange,
+                    ),
+                  ],
+                ),
+              ),
+
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //   children: [
+              //     Container(
+              //       padding: const EdgeInsets.only(top: 20, left: 8),
+              //       height: getMinHeight(restaurants.menus),
+              //       width: 160,
+              //       decoration: BoxDecoration(
+              //           color: Colors.grey,
+              //           borderRadius: BorderRadius.circular(10)),
+              //       child: Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: <Widget>[
+              //           for (var item in restaurants.menus.foods)
+              //             Text(item.name,
+              //                 style: Theme.of(context).textTheme.headline6)
+              //         ],
+              //       ),
+              //     ),
+              //     Container(
+              //       padding: const EdgeInsets.only(top: 20, left: 8),
+              //       height: getMinHeight(restaurants.menus),
+              //       width: 160,
+              //       decoration: BoxDecoration(
+              //           color: Colors.grey,
+              //           borderRadius: BorderRadius.circular(10)),
+              //       child: Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: <Widget>[
+              //           for (var item in restaurants.menus.drinks)
+              //             Text(item.name,
+              //                 style: Theme.of(context).textTheme.headline6)
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // )
             ],
           ),
         ]),

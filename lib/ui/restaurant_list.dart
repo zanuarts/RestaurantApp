@@ -72,20 +72,49 @@ class RestaurantListPage extends StatelessWidget {
 
 Widget _buildRestaurantItem(BuildContext context, Restaurant restaurant){
   return ListTile(
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
     leading: Hero(
       tag: restaurant.pictureId,
-      child: Image.network(
-        restaurant.pictureId,
+      child: Container(
         width: 100,
-        fit: BoxFit.fitWidth,
-      ),
+        height: 80,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8)
+        ),
+        child: Image.network(
+          restaurant.pictureId,
+          width: 100,
+          fit: BoxFit.fitWidth,
+        ),
+      )
     ),
     title: Text(
       restaurant.name,
       style: Theme.of(context).textTheme.headline6,
     ),
-    subtitle: Text(restaurant.rating),
+    subtitle: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height:4),
+        Row(
+          children: [
+            Icon(Icons.location_on_rounded,
+              size: 18,
+            ),
+            SizedBox(width:4),
+            Text(restaurant.city),
+          ],
+        ),
+        SizedBox(height:4),
+        Row(
+          children: [
+            Icon(Icons.star_rate_rounded, size: 18,),
+            SizedBox(width:4),
+            Text(restaurant.rating, style: Theme.of(context).textTheme.bodyText2,)
+          ],
+        ),
+      ],
+    ),
     onTap: (){
       Navigator.pushNamed(context, RestaurantDetailPage.routeName, arguments: restaurant);
     },
