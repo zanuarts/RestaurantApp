@@ -97,7 +97,7 @@ class Food{
   }
 }
 
-List<Food> parseFood(String json){
+List<Food> parseFoods(String json){
   if (json == null){
     return [];
   }

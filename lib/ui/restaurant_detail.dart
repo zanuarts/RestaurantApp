@@ -2,15 +2,19 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/models/models.dart';
 
+import '../models/models.dart';
+import '../models/models.dart';
+import '../models/models.dart';
+import '../models/models.dart';
+
 class RestaurantDetailPage extends StatelessWidget {
   static const routeName = '/restaurant_detail';
 
   final Restaurant restaurants;
-  final Food food;
-  final Drink drinks;
+
 
   const RestaurantDetailPage(
-      {@required this.restaurants, this.food, this.drinks});
+      {@required this.restaurants});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +38,8 @@ class RestaurantDetailPage extends StatelessWidget {
             )
           ];
         },
-        body: ListView(padding: const EdgeInsets.all(16), children: [
+        body: ListView(padding: const EdgeInsets.all(16), 
+        children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -68,35 +73,25 @@ class RestaurantDetailPage extends StatelessWidget {
               ),
               SizedBox(height: 16),
 
-              Container(
-                height: 200,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    Container(
-                      width: 160.0,
-                      color: Colors.red,
-                      // child: Text(restaurants.menus.foods),
-                    ),
-                    Container(
-                      width: 160.0,
-                      color: Colors.blue,
-                    ),
-                    Container(
-                      width: 160.0,
-                      color: Colors.green,
-                    ),
-                    Container(
-                      width: 160.0,
-                      color: Colors.yellow,
-                    ),
-                    Container(
-                      width: 160.0,
-                      color: Colors.orange,
-                    ),
-                  ],
-                ),
-              ),
+              // Expanded(
+              //   child: FutureBuilder<String>(
+              //     future: DefaultAssetBundle.of(context).loadString('assets/json/local_restaurant.json'),
+              //     builder: (context, snapshot){
+              //       final List<Food> foods = parseFoods(snapshot.data);
+              //       return foods.length != 0
+              //       ? ListView.builder(
+              //           itemCount: restaurants.menus.foods.length,
+              //           itemBuilder: (context, index){
+              //             return _buildFoodsItem(context, foods[index]);
+              //           }
+              //         )
+              //       : Center(
+              //         child: Text('There is no data!'),
+              //       );
+              //     },
+              //   ),
+              // )
+
 
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -142,6 +137,38 @@ class RestaurantDetailPage extends StatelessWidget {
     );
   }
 }
+
+Widget _buildFoodsItem(BuildContext context, Food foods){
+  Container(
+                height: 200,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    Card(
+                      child: InkWell(
+                        splashColor: Colors.blue.withAlpha(30),
+                        onTap: () {
+                          print('Card tapped.');
+                          print(foods.name);
+                        },  
+                        child: Container(
+                          width: 160.0,
+                          child: Column(
+                            
+                            children: [
+                              
+                              Text(foods.name),
+                            ],
+                          ),
+                        ),
+                      )
+                    ),
+                    
+                  ],
+                ),
+              );
+}
+
 
 double getMinHeight(Menus m) {
   int maxRow =
