@@ -8,18 +8,19 @@ import 'package:bloc/bloc.dart';
 class RestoBloc extends Bloc<RestoEvent, RestoState> {
   final ApiRepository _apiRepository = ApiRepository();
 
-  RestoBloc(RestoState initialState) : super(initialState);
+  @override
+  RestoState get initialState => RestoInitial();
 
   @override
   Stream<RestoState> mapEventToState(
-    RestoEvent event
-  ) async* {
+    RestoEvent event) 
+    async* {
     if (event is GetRestoList){
       try {
         yield RestoLoading();
         final mList = await _apiRepository.fetchRestoList();
         yield RestoLoaded(mList);
-        if (mList.error != null) {
+        if (mList.error) {
           yield RestoError(mList.error.toString());
         }
       }

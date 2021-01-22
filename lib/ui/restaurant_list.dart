@@ -14,9 +14,7 @@ class RestaurantListPage extends StatefulWidget {
 }
 
 class _RestaurantListPageState extends State<RestaurantListPage> {
-  final RestoBloc _restoBloc = RestoBloc(initialState);
-
-  static RestoState get initialState => null;
+  RestoBloc _restoBloc = RestoBloc();
 
   @override
   void initState(){
@@ -91,7 +89,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                       }
                       else if (state is RestoLoaded) {
                         print('check state 3');
-                        return _buildListResto(context, state.resto);
+                        return _buildListResto(state.resto);
                       }
                       else if (state is RestoError) {
                         print('check state 4');
@@ -102,6 +100,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                 ),
               ),
             ),
+        
 
             // Expanded(
             //   child: FutureBuilder<String>(
@@ -121,20 +120,23 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
             //     },
             //   ),
             // )
-          ],
-        ),
+          ]
+        // ),
+      )
       )
     );
   }
 }
 
-Widget _buildLoading() => Center(child: CircularProgressIndicator());
+Widget _buildLoading() => Center(
+  child: CircularProgressIndicator()
+);
 
-Widget _buildListResto(BuildContext context, Resto resto){
+Widget _buildListResto(Resto resto){
   return ListView.builder(
     itemCount: resto.restaurants.length,
     itemBuilder: (context, index){
-      ListTile(
+      return ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         leading: Hero(
           tag: resto.restaurants[index].pictureId,
@@ -145,7 +147,7 @@ Widget _buildListResto(BuildContext context, Resto resto){
               borderRadius: BorderRadius.circular(8)
             ),
             child: Image.network(
-              resto.restaurants[index].pictureId,
+              'https://restaurant-api.dicoding.dev/images/medium/${resto.restaurants[index].pictureId}',
               width: 100,
               fit: BoxFit.fitWidth,
             ),
@@ -179,7 +181,7 @@ Widget _buildListResto(BuildContext context, Resto resto){
           ],
         ),
         onTap: (){
-          // Navigator.pushNamed(context, RestaurantDetailPage.routeName, arguments: resto.restaurants);
+          Navigator.pushNamed(context, RestaurantDetailPage.routeName, arguments: resto.restaurants[index]);
         },
       );
     },
