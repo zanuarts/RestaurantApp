@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:restaurant_app/blocs/resto_bloc/resto_bloc.dart';
 import 'package:restaurant_app/blocs/resto_bloc/resto_event.dart';
 import 'package:restaurant_app/blocs/resto_bloc/resto_state.dart';
-import 'package:restaurant_app/data/models/models.dart';
+import 'package:restaurant_app/data/models/resto_model.dart';
 import 'package:restaurant_app/ui/restaurant_detail.dart';
 
 class RestaurantListPage extends StatefulWidget {
@@ -100,29 +100,8 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                 ),
               ),
             ),
-        
-
-            // Expanded(
-            //   child: FutureBuilder<String>(
-            //     future: DefaultAssetBundle.of(context).loadString('assets/json/local_restaurant.json'),
-            //     builder: (context, snapshot){
-            //       final List<Resto> restaurants = parseRestaurants(snapshot.data);
-            //       return restaurants.length != 0
-            //       ? ListView.builder(
-            //           itemCount: restaurants.length,
-            //           itemBuilder: (context, index){
-            //             return _buildRestaurantItem(context, restaurants[index]);
-            //           }
-            //         )
-            //       : Center(
-            //         child: Text('There is no data!'),
-            //       );
-            //     },
-            //   ),
-            // )
           ]
-        // ),
-      )
+        )
       )
     );
   }
@@ -181,7 +160,10 @@ Widget _buildListResto(Resto resto){
           ],
         ),
         onTap: (){
-          Navigator.pushNamed(context, RestaurantDetailPage.routeName, arguments: resto.restaurants[index]);
+          Navigator.pushNamed(
+            context,
+            RestaurantDetailPage.routeName, 
+            arguments: resto.restaurants[index].id);
         },
       );
     },
