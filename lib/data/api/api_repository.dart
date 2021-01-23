@@ -9,9 +9,9 @@ class ApiRepository {
     return _service.fetchRestoList();
   }
 
-  Future<RestoDetail> fetchRestoDetail(){
-    return _service.fetchRestoDetail();
+  Future<RestoDetail> fetchRestoDetail(String id) {
+    return _service.fetchRestoDetail(id);
   }
 }
 
-class NetworkError extends Error{}
+class NetworkError extends Error {}

@@ -10,19 +10,17 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
   DetailState get initialState => DetailInitial();
 
   @override
-  Stream<DetailState> mapEventToState(
-    DetailEvent event) 
-    async* {
-    if (event is GetDetailList){
+  Stream<DetailState> mapEventToState(DetailEvent event) async* {
+    if (event is GetDetailList) {
       try {
         yield DetailLoading();
-        final mList = await _apiRepository.fetchRestoDetail();
+        // sesuaikeun jeung api service nu geus di refactor
+        final mList = await _apiRepository.fetchRestoDetail(event.restaurantId);
         yield DetailLoaded(mList);
         if (mList.error) {
           yield DetailError(mList.error.toString());
         }
-      }
-      on NetworkError{
+      } on NetworkError {
         yield DetailError("Failed to fetch data");
       }
     }

@@ -143,16 +143,16 @@ class Menus {
   }
 }
 
-class Foods{
+class Foods {
   String name;
 
   Foods({this.name});
 
-  Foods.fromJson(Map<String, dynamic> foods){
+  Foods.fromJson(Map<String, dynamic> foods) {
     name = foods['name'];
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     return data;
@@ -166,11 +166,11 @@ class Drinks {
 
   String name;
 
-  Drinks.fromJson(Map<String, dynamic> drink){
+  Drinks.fromJson(Map<String, dynamic> drink) {
     name = drink['name'];
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     return data;
