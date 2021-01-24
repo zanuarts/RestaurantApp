@@ -6,17 +6,8 @@ import 'package:restaurant_app/blocs/resto_bloc/resto_state.dart';
 import 'package:restaurant_app/data/models/resto_model.dart';
 import 'package:restaurant_app/ui/restaurant_detail.dart';
 import 'package:restaurant_app/blocs/detail_bloc/detail_bloc.dart';
-
-import '../blocs/detail_bloc/detail_bloc.dart';
-import '../blocs/detail_bloc/detail_bloc.dart';
-import '../blocs/detail_bloc/detail_bloc.dart';
-import '../blocs/detail_bloc/detail_bloc.dart';
-import '../blocs/detail_bloc/detail_bloc.dart';
-import '../blocs/detail_bloc/detail_bloc.dart';
-import '../blocs/detail_bloc/detail_event.dart';
-import '../blocs/detail_bloc/detail_state.dart';
-import '../blocs/detail_bloc/detail_state.dart';
-import '../data/models/detail_model.dart';
+import 'package:restaurant_app/blocs/detail_bloc/detail_event.dart';
+import 'package:restaurant_app/blocs/detail_bloc/detail_state.dart';
 
 class RestaurantListPage extends StatefulWidget {
   static const routeName = '/restaurant_list';
@@ -27,8 +18,8 @@ class RestaurantListPage extends StatefulWidget {
 
 class _RestaurantListPageState extends State<RestaurantListPage> {
   RestoBloc _restoBloc = RestoBloc();
-  DetailBloc _detailBloc =
-      DetailBloc(); // ieu rada acak acakan keneh kekw ngan sahenteuna jalan
+  // ignore: close_sinks
+  DetailBloc _detailBloc = DetailBloc(); // ieu rada acak acakan keneh kekw ngan sahenteuna jalan
   // lamun teu ditutup sink na bakal memory leak moal?
   @override
   void initState() {
@@ -39,33 +30,12 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: NestedScrollView(
-            headerSliverBuilder: (context, isScrolled) {
-              return [
-                SliverAppBar(
-                  pinned: true,
-                  expandedHeight: 120,
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: Container(
-                      padding: const EdgeInsets.only(top: 70, left: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Restaurant',
-                            style: Theme.of(context).textTheme.headline4,
-                          ),
-                          SizedBox(height: 8),
-                          Text('Recommended Restaurant for you!')
-                        ],
-                      ),
-                    ),
-                    titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
-                  ),
-                )
-              ];
-            },
-            body: Column(children: [
+            body: SafeArea(
+              child: Column(children: [
+                // Container(
+                //   height: 120,
+                //   color: Colors.amber,
+                // ),
               Container(
                 margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                 height: 40,
@@ -100,14 +70,16 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                           return _buildListResto(state.resto, _detailBloc);
                         } else if (state is RestoError) {
                           print('check state 4');
-                          return Container(width: 0.0, height: 0.0);
+                          return _buildError();
                         }
                       },
                     ),
                   ),
                 ),
               ),
-            ])));
+            ])),
+            )
+            ;
   }
 }
 
@@ -115,7 +87,19 @@ void getRestaurantDataFromAPI(String id, DetailBloc _detailBloc) {
   _detailBloc.add(GetDetailList(id));
 }
 
-Widget _buildLoading() => Center(child: CircularProgressIndicator());
+Widget _buildLoading() {
+  return Center(
+    child: CircularProgressIndicator()
+  );
+}
+
+Widget _buildError() {
+  return Center(
+    child: Text(
+      "Tidak ada koneksi internet"
+    ),
+  );
+}
 
 Widget _buildListResto(Resto resto, DetailBloc _detailBloc) {
   return ListView.builder(

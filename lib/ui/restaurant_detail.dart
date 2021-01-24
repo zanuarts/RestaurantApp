@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:restaurant_app/blocs/detail_bloc/detail_bloc.dart';
+import 'package:restaurant_app/blocs/detail_bloc/detail_event.dart';
+import 'package:restaurant_app/blocs/detail_bloc/detail_state.dart';
 import 'package:restaurant_app/data/models/detail_model.dart';
+import 'package:restaurant_app/ui/restaurant_list.dart';
 
 import '../data/models/detail_model.dart';
 
@@ -8,42 +13,97 @@ class RestaurantDetailPage extends StatefulWidget {
   static const routeName = '/restaurant_detail';
 
   final RestoDetail restoDetail; // initialize restoDetail
+  // RestaurantDetailPage({this.restoDetail});
   RestaurantDetailPage({Key key, this.restoDetail}) : super(key: key);
 
   @override
-  _RestaurantDetailPageState createState() => _RestaurantDetailPageState(
-      Key(restoDetail.restaurant.id)); //insert ID into state class
+  _RestaurantDetailPageState createState() => _RestaurantDetailPageState(Key(restoDetail.restaurant.id)); //insert ID into state class
+  // _RestaurantDetailPageState createState() => _RestaurantDetailPageState(restoDetail.restaurant.id);
 }
 
 class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
-  final Key restaurantId;
+  Key restaurantId;
+
   _RestaurantDetailPageState(this.restaurantId);
   // now you have the id, do whatever you want kekw
+
+  DetailBloc _detailBloc = DetailBloc(); 
+
+  @override
+  void initState() {
+    _detailBloc.add(GetDetailList(widget.restoDetail.restaurant.id));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (context, isScrolled) {
-          return [
-            SliverAppBar(
-              pinned: true,
-              expandedHeight: 200,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Hero(
-                  tag: widget.restoDetail.restaurant.pictureId,
-                  child: Image.network(
-                    'https://restaurant-api.dicoding.dev/images/medium/${widget.restoDetail.restaurant.pictureId}',
-                    fit: BoxFit.fitWidth,
-                  ),
-                  key: Key(widget.restoDetail.restaurant.id),
-                ),
-                titlePadding: const EdgeInsets.only(left: 30, bottom: 16),
-              ),
-            )
-          ];
-        },
-        body: ListView(padding: const EdgeInsets.all(16), children: [
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: (){
+            Navigator.pushNamed(context, RestaurantListPage.routeName);
+          },
+        ),
+        title: Text(
+          widget.restoDetail.restaurant.name
+        ),
+      ),
+      body: Container(
+        child: BlocProvider(
+          create: (_) => _detailBloc,
+          child: BlocListener<DetailBloc, DetailState>(
+            listener: (context,state){
+              if (state is DetailError) {
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(content: Text('Gagal mengambil data')));
+              }
+            },
+            child: BlocBuilder<DetailBloc, DetailState>(
+              builder: (context, state) {
+                print('check state');
+                if (state is DetailInitial) {
+                  print('check state 1');
+                  return _buildLoading();
+                } 
+                else if (state is DetailLoading) {
+                  print('check state 2');
+                  return _buildLoading();
+                }
+                else if (state is DetailLoaded) {
+                  print('check state 3');
+                  return _buildDetailResto(state.detail);
+                }
+                else if (state is DetailError) {
+                  print('check state 4');
+                  return _buildError();
+                }
+              },
+            ),
+          ),
+        )
+      ),
+    );
+  }
+
+  Widget _buildLoading() {
+    return Center(
+      child: CircularProgressIndicator()
+    );
+  }
+
+  Widget _buildError() {
+    return Center(
+      child: Text(
+        "Tidak ada koneksi internet"
+      ),
+    );
+  }
+
+  Widget _buildDetailResto(RestoDetail detail) {
+    return ListView(
+      padding: const EdgeInsets.all(16), 
+      children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -147,8 +207,6 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
               )
             ],
           ),
-        ]),
-      ),
-    );
+        ]);
   }
 }
