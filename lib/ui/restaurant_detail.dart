@@ -101,13 +101,24 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
   }
 
   Widget _buildDetailResto(RestoDetail detail) {
-    return ListView(
-      padding: const EdgeInsets.all(16), 
+    return ListView( 
       children: [
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              Container(
+                height: 200,
+                width: MediaQuery.of(context).size.width,
+                child: Image.network(
+                  'https://restaurant-api.dicoding.dev/images/medium/${widget.restoDetail.restaurant.pictureId}',
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
                 widget.restoDetail.restaurant.name,
                 style: Theme.of(context).textTheme.headline4,
               ),
@@ -205,6 +216,10 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                   ],
                 ),
               )
+                  ],
+                ),
+              )
+              
             ],
           ),
         ]);
