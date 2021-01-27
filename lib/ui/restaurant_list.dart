@@ -22,11 +22,8 @@ class RestaurantListPage extends StatefulWidget {
 
 class _RestaurantListPageState extends State<RestaurantListPage> {
   RestoBloc _restoBloc = RestoBloc();
-  // ignore: close_sinks
-  DetailBloc _detailBloc = DetailBloc(); // ieu rada acak acakan keneh kekw ngan sahenteuna jalan
-  // lamun teu ditutup sink na bakal memory leak moal?
+  DetailBloc _detailBloc = DetailBloc();
   SearchBloc _searchBloc = SearchBloc();
-
 
   TextEditingController _controller;
   
@@ -48,7 +45,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                 listener: (context, state) {
                   if (state is SearchLoaded) {
                     Navigator.pushNamed(context, RestaurantSearchPage.routeName,
-                        arguments: state.search);
+                        arguments: state.search,);
                   }
                 },
                 child: Container(),
@@ -117,7 +114,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
   }
 }
 
-Widget getSearchValue(String value, SearchBloc _searchBloc){
+void getSearchValue(String value, SearchBloc _searchBloc){
   _searchBloc.add(GetSearchList(value));
 }
 
@@ -188,13 +185,9 @@ Widget _buildListResto(Resto resto, DetailBloc _detailBloc) {
                 )
               ],
             ),
-
-            // didieu ngecek mun data detail restaurant na geus aya kakara pindah page
-            
           ],
         ),
         onTap: () {
-          // manggil bloc detail supaya bisa menang data detail Restaurant
           getRestaurantDataFromAPI(resto.restaurants[index].id, _detailBloc);
         },
       );

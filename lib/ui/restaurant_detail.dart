@@ -9,23 +9,20 @@ import 'package:restaurant_app/ui/restaurant_list.dart';
 import '../data/models/detail_model.dart';
 
 class RestaurantDetailPage extends StatefulWidget {
-  // StatefulWidget is mandatory
   static const routeName = '/restaurant_detail';
 
-  final RestoDetail restoDetail; // initialize restoDetail
-  // RestaurantDetailPage({this.restoDetail});
+  final RestoDetail restoDetail; 
   RestaurantDetailPage({Key key, this.restoDetail}) : super(key: key);
 
   @override
-  _RestaurantDetailPageState createState() => _RestaurantDetailPageState(Key(restoDetail.restaurant.id)); //insert ID into state class
-  // _RestaurantDetailPageState createState() => _RestaurantDetailPageState(restoDetail.restaurant.id);
+  _RestaurantDetailPageState createState() => 
+  _RestaurantDetailPageState(Key(restoDetail.restaurant.id)); //insert ID into state class
 }
 
 class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
   Key restaurantId;
 
   _RestaurantDetailPageState(this.restaurantId);
-  // now you have the id, do whatever you want kekw
 
   DetailBloc _detailBloc = DetailBloc(); 
 

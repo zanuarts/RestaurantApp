@@ -33,7 +33,7 @@ class Restaurant {
   String pictureId;
   List<Categories> categories;
   Menus menus;
-  double rating;
+  String rating;
   List<CustomerReviews> customerReviews;
 
   Restaurant(
@@ -62,7 +62,7 @@ class Restaurant {
       });
     }
     menus = json['menus'] != null ? new Menus.fromJson(json['menus']) : null;
-    rating = json['rating'];
+    rating = json['rating'].toString();
     if (json['customerReviews'] != null) {
       customerReviews = new List<CustomerReviews>();
       json['customerReviews'].forEach((v) {
