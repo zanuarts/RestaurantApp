@@ -24,12 +24,6 @@ class RestaurantSearchPage extends StatefulWidget {
 class _RestaurantSearchPageState extends State<RestaurantSearchPage> {
   SearchBloc _searchBloc = SearchBloc();
   DetailBloc _detailBloc = DetailBloc();
-
-  @override
-  void initState() {
-    // _searchBloc.add(GetSearchList());
-    super.initState();
-  }
   
   @override
   Widget build(BuildContext context) {
@@ -47,7 +41,9 @@ class _RestaurantSearchPageState extends State<RestaurantSearchPage> {
       ),
       body: SafeArea(
         // child: Center(child: Text('Congrats, you are in search page!'),),
-        child: ListView(
+        child: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [    
             BlocProvider(
               create: (context) => _detailBloc,
@@ -61,54 +57,11 @@ class _RestaurantSearchPageState extends State<RestaurantSearchPage> {
                 child: Container(),
               ),
             ),
-            BlocProvider(
-              create: (_) => _searchBloc,
-              child: BlocListener<SearchBloc, SearchState>(
-                listener: (context, state){
-                  if (state is SearchError){
-                    Scaffold.of(context).showSnackBar(
-                      SnackBar(content: Text(state.message)));
-                  };
-                },
-                child: BlocBuilder<SearchBloc, SearchState>(
-                  builder: (context, state){
-                    if (state is SearchInitial){
-                      print(state);
-                      return _buildLoading();
-                    }
-                    else if (state is SearchLoading){
-                      print(state);
-                      return _buildLoading();
-                    }
-                    else if (state is SearchLoaded){
-                      print(state);
-                      return _buildResult(state.search, _detailBloc);
-                    }
-                    else if (state is SearchError){
-                      print(state);
-                      return _buildError();
-                    }
-                  },
-                ),
-              ),
-            ),
-          ],      
-        )
-      )
-    );
-  }
-
-  Widget _buildLoading() => Center(child: CircularProgressIndicator());
-
-  Widget _buildError() => Center(child: Text('Failed to load data'));
-
-  Widget _buildResult(RestoSearch restoSearch, DetailBloc _detailBloc){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('${widget.restoSearch.founded} hasil ditemukan'), 
-        ListView.builder(
-          itemCount: restoSearch.restaurants.length,
+            
+            Padding(padding: EdgeInsets.only(top:16, left:16, bottom: 8),child: Text('${widget.restoSearch.founded} hasil ditemukan'),),
+            Expanded(
+            child: ListView.builder(
+          itemCount: widget.restoSearch.restaurants.length,
           itemBuilder: (context, index){
             return ListTile(
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -117,13 +70,13 @@ class _RestaurantSearchPageState extends State<RestaurantSearchPage> {
                 height: 80,
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
                 child: Image.network(
-                  'https://restaurant-api.dicoding.dev/images/medium/${restoSearch.restaurants[index].pictureId}',
+                  'https://restaurant-api.dicoding.dev/images/medium/${widget.restoSearch.restaurants[index].pictureId}',
                   width: 100,
                   fit: BoxFit.fitWidth,
                 ),
               ),
               title: Text(
-                restoSearch.restaurants[index].name,
+                widget.restoSearch.restaurants[index].name,
                 style: Theme.of(context).textTheme.headline6,
               ),
               subtitle: Column(
@@ -137,7 +90,7 @@ class _RestaurantSearchPageState extends State<RestaurantSearchPage> {
                         size: 18,
                       ),
                       SizedBox(width: 4),
-                      Text(restoSearch.restaurants[index].city),
+                      Text(widget.restoSearch.restaurants[index].city),
                     ],
                   ),
                   SizedBox(height: 4),
@@ -149,7 +102,7 @@ class _RestaurantSearchPageState extends State<RestaurantSearchPage> {
                       ),
                       SizedBox(width: 4),
                       Text(
-                        restoSearch.restaurants[index].rating.toString(),
+                        widget.restoSearch.restaurants[index].rating.toString(),
                         style: Theme.of(context).textTheme.bodyText2,
                       )
                     ],
@@ -157,12 +110,14 @@ class _RestaurantSearchPageState extends State<RestaurantSearchPage> {
                 ],
               ),
               onTap: () {
-                getRestaurantDataFromAPI(restoSearch.restaurants[index].id, _detailBloc);
+                getRestaurantDataFromAPI(widget.restoSearch.restaurants[index].id, _detailBloc);
               },
             );
           },
+        ))
+          ]
         )
-      ],
+      ))
     );
   }
 }
