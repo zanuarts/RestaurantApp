@@ -21,10 +21,10 @@ class RestoBloc extends Bloc<RestoEvent, RestoState> {
         final mList = await _apiRepository.fetchRestoList();
         yield RestoLoaded(mList);
         if (mList.error) {
-          yield RestoError(mList.error.toString());
+          yield RestoError(mList.message);
         }
       }
-      on NetworkError{
+      catch(e){
         yield RestoError("Failed to fetch data");
       }
     }

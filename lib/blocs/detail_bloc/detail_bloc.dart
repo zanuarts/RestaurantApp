@@ -20,7 +20,7 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
         if (mList.error) {
           yield DetailError(mList.error.toString());
         }
-      } on NetworkError {
+      }  catch(e) {
         yield DetailError("Failed to fetch data");
       }
     }

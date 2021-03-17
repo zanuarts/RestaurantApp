@@ -22,7 +22,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           yield SearchError(mList.error.toString());
         }
       }
-      on NetworkError{
+       catch(e){
         yield SearchError("Failed to fetch data");
       }
     }

@@ -6,6 +6,10 @@ class Resto {
 
   Resto({this.error, this.message, this.count, this.restaurants});
 
+  Resto.withError(String errorMessage) {
+    message = errorMessage;
+  }
+
   Resto.fromJson(Map<String, dynamic> json) {
     error = json['error'];
     message = json['message'];

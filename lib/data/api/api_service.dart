@@ -15,11 +15,12 @@ class ApiService {
 
   Future<Resto> fetchRestoList() async {
     final response = await http.get(_baseUrl + _list);
-    if (response.statusCode == 200) {
-      return Resto.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load restaurant data');
-    }
+      if (response.statusCode == 200){
+        return Resto.fromJson(json.decode(response.body));
+      }
+      else{
+        throw Exception('Failed to load Detail data');
+      }
   }
 
   Future<RestoDetail> fetchRestoDetail(String id) async {
