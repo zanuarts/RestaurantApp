@@ -1,10 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:restaurant_app/blocs/detail_bloc/detail_bloc.dart';
 import 'package:restaurant_app/blocs/detail_bloc/detail_event.dart';
 import 'package:restaurant_app/blocs/detail_bloc/detail_state.dart';
 import 'package:restaurant_app/data/models/detail_model.dart';
-import 'package:restaurant_app/ui/restaurant_list.dart';
+import 'package:restaurant_app/ui/home_page.dart';
+import 'package:restaurant_app/widgets/platform_widget.dart';
 
 import '../data/models/detail_model.dart';
 
@@ -32,21 +34,8 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: (){
-            Navigator.pushNamed(context, RestaurantListPage.routeName);
-          },
-        ),
-        title: Text(
-          widget.restoDetail.restaurant.name
-        ),
-      ),
-      body: Container(
+  Widget _buildDetail(BuildContext context){
+    return Container(
         child: BlocProvider(
           create: (_) => _detailBloc,
           child: BlocListener<DetailBloc, DetailState>(
@@ -79,7 +68,48 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
             ),
           ),
         )
+      );
+  }
+
+  Widget _buildAndroid(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: (){
+            Navigator.pushNamed(context, HomePage.routeName);
+          },
+        ),
+        title: Text(
+          widget.restoDetail.restaurant.name
+        ),
       ),
+      body: _buildDetail(context)
+    );
+  }
+
+  Widget _buildIos(BuildContext context) {
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: (){
+            Navigator.pushNamed(context, HomePage.routeName);
+          },
+        ),
+        middle: Text(
+          widget.restoDetail.restaurant.name
+        ),
+      ),
+      child: _buildDetail(context)
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PlatformWidget(
+      androidBuilder: _buildAndroid,
+      iosBuilder: _buildIos,
     );
   }
 
@@ -126,6 +156,13 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                   SizedBox(width: 8),
                   Text(
                     widget.restoDetail.restaurant.city,
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
+                  SizedBox(width: 12),
+                  Icon(Icons.star),
+                  SizedBox(width: 8),
+                  Text(
+                    widget.restoDetail.restaurant.rating,
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ],
@@ -188,7 +225,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                   children: [
                     for (var item in widget.restoDetail.restaurant.menus.drinks)
                       Card(
-                          child: InkWell(
+                        child: InkWell(
                         splashColor: Colors.blue.withAlpha(30),
                         onTap: () {
                           print('Card tapped.');
@@ -210,15 +247,34 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                           ),
                         ),
                       )),
-                  ],
+                    ],
+                  ),
                 ),
-              )
-                  ],
+                SizedBox(height: 8),
+                Text(
+                  'Review',
+                  style: Theme.of(context).textTheme.headline6,
                 ),
-              )
-              
-            ],
-          ),
-        ]);
+                SizedBox(height: 8),
+                for (var review in widget.restoDetail.restaurant.customerReviews)
+                  Card(
+                    margin: EdgeInsets.only(bottom: 8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ListTile(
+                          leading: Icon(Icons.person),
+                          title: Text(review.name),
+                          subtitle: Text(review.date + "\n" + review.review),
+                        ),
+                      ],
+                    ),
+                  )
+              ],
+            ),
+          )    
+        ],
+      ),
+    ]);
   }
 }

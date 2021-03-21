@@ -3,9 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:restaurant_app/blocs/detail_bloc/detail_bloc.dart';
 import 'package:restaurant_app/blocs/detail_bloc/detail_state.dart';
 import 'package:restaurant_app/blocs/search_bloc/search_bloc.dart';
-import 'package:restaurant_app/blocs/search_bloc/search_event.dart';
-import 'package:restaurant_app/blocs/search_bloc/search_state.dart';
 import 'package:restaurant_app/data/models/search_model.dart';
+import 'package:restaurant_app/ui/home_page.dart';
 import 'package:restaurant_app/ui/restaurant_detail.dart';
 import 'package:restaurant_app/ui/restaurant_list.dart';
 
@@ -32,7 +31,7 @@ class _RestaurantSearchPageState extends State<RestaurantSearchPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: (){
-            Navigator.pushNamed(context, RestaurantListPage.routeName);
+            Navigator.pushNamed(context,HomePage.routeName);
           },
         ),
         title: Text(

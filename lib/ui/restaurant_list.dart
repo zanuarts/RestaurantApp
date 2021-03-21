@@ -187,6 +187,7 @@ Widget _buildListResto(Resto resto, DetailBloc _detailBloc) {
             ),
           ],
         ),
+        
         onTap: () {
           getRestaurantDataFromAPI(resto.restaurants[index].id, _detailBloc);
         },
